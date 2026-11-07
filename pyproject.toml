@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pp3-toolkit"
+version = "0.1.0"
+description = "Reusable static code-generation macros and graph structures for PP3"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+authors = [{ name = "JDK8u341" }]
+keywords = ["pp3", "esolang", "code-generation", "brainfuck"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Code Generators",
+  "Topic :: Utilities",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/JDK8u341/PP3-Toolkit"
+Documentation = "https://github.com/JDK8u341/PP3-Toolkit/tree/main/docs"
+Repository = "https://github.com/JDK8u341/PP3-Toolkit"
+Issues = "https://github.com/JDK8u341/PP3-Toolkit/issues"
+
+[tool.setuptools.packages.find]
+include = ["pp3_toolkit*"]
