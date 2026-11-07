@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .venv/
+.wheel-check/
 build/
 dist/
 *.egg-info/

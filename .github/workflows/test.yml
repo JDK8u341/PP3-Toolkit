@@ -1,0 +1,59 @@
+name: Toolkit 验证
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12', '3.14']
+    steps:
+      - name: 检出工具包与固定 PP3
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: 配置 Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: 安装本地包
+        run: python -m pip install .
+      - name: 运行测试
+        run: python -B -m unittest discover -v
+
+  wheel:
+    name: 构建可安装 wheel
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出工具包
+        uses: actions/checkout@v7
+      - name: 配置 Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: 构建 wheel 并验证安装
+        run: |
+          python -m pip install build
+          python -m build --wheel
+          python -m pip install --no-deps dist/*.whl
+          cd "$RUNNER_TEMP"
+          python -c "import pp3_toolkit; print(pp3_toolkit.__version__); print(pp3_toolkit.compile_program(lambda m: '&0'))"
+      - name: 保存 wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pp3-toolkit-wheel
+          path: dist/*.whl
+          if-no-files-found: error
+          retention-days: 30
